@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vacancy List</title>
+</head>
+<body>
+    <div style="width: 300px;
+                margin: auto;
+                margin-top: 50px;">
+
+        {% for vacancy in page_obj %}
+            <p>{{ vacancy.company }} </p>
+            <p>{{ vacancy.v_title }}</p>
+            <p>{{ vacancy.salary }}$</p>
+            <br><br>
+        <button type="submit"><a href="{% url 'vacancy' pk=vacancy.pk %}">Подробно</a></button>
+        {% endfor %}
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    {% for p_num in paginator.page_range %}
+                        {% if p_num == page_obj.number %}
+                            <span>
+                                {{ p_num }}
+                            </span>
+                        {% elif p_num >= page_obj.number|add:-2 and p_num <= page_obj.number|add:2 %}
+                            <span>
+                                <a href="?page={{ p_num }}">{{ p_num }}</a>
+                            </span>
+                        {% endif %}
+                    {% endfor %}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+</body>
+</html>
